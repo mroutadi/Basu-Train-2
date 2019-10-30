@@ -248,3 +248,49 @@ void Start()
         }
     }
 }
+
+void SelectClass(string ClassName)                                                      //This will select a class
+{
+    Selected = ClassName;
+    if (ClassName != "") cout<< ClassName <<" is Selected!"<<endl;                      //Notice that class selected
+}
+void AddClass(string FileName)                                                          //This will add a class
+{
+    Class Cclass;                                               //After deceleration we have a class
+    ifstream AddClassFM;                                        //Adding Class File Manager
+    AddClassFM.open(FileName.c_str());                          //Opening File
+
+    if (!AddClassFM){                                           //Error for Not opening
+        cerr << "Error while opening your file" << endl;
+        return;
+    }
+    getline(AddClassFM , Cclass.ClassName);                     //Get class Name
+    AddClassFM >> Cclass.Capacity;                              //Get class Capacity
+    float ClassSum = 0;                                         //Sum of students grade for class average
+    while(!AddClassFM.eof()){                                   //Get Students
+        Student Daneshju;                                       //Student var created
+        AddClassFM >> Daneshju.Firstname >> Daneshju.Lastname;
+        string Birth;                                           //Birthday string created
+        AddClassFM >> Birth;                                    //Read birthday string
+        Daneshju.Birthday.Year= (unsigned short int) stoi(Birth.substr(0,4));
+        Daneshju.Birthday.Month = (unsigned short int) stoi(Birth.substr(5,2));
+        Daneshju.Birthday.Day = (unsigned short int) stoi(Birth.substr(8,2));
+        AddClassFM >> Daneshju.Grade >> Daneshju.ID;
+        ClassSum += Daneshju.Grade;
+        Cclass.Data.push_back(Daneshju);
+    }
+    Cclass.Average = ClassSum / Cclass.Capacity;
+    AddClassFM.close();                                         //Close The File
+    Database.push_back(Cclass);                                 //Add class to DB
+    cout<< "Class that is in file "<<FileName<<" Added"<<endl;
+}
+void RemoveClass(string ClassName)                                                      //This will remove a class
+{
+    int Counter = 0;                                            //This will find class place in DB vector
+    for (Class &WillRmv : Database){
+        if(ClassName == WillRmv.ClassName) break;
+        Counter++;
+    }
+    Database.erase(Database.begin() + Counter);                 //Remove class from DB
+    cout<< "Class "<<ClassName<<" Removed"<<endl;
+}
