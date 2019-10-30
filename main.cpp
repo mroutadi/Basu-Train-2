@@ -294,3 +294,44 @@ void RemoveClass(string ClassName)                                              
     Database.erase(Database.begin() + Counter);                 //Remove class from DB
     cout<< "Class "<<ClassName<<" Removed"<<endl;
 }
+void AddStudent(string NF, Date B, unsigned long long int ID1, float G)                 //This will add a student
+{
+    Student S;                                                  //Student var created
+    S.Firstname = NF.substr(0,5);
+    S.Lastname = NF.substr(6,7);
+    S.Birthday = B;
+    S.ID = ID1;
+    S.Grade = G;
+    while ("" == Selected)                                      //Check class of student who will add
+    {
+        cout << "Please choose that this student will add to what class : ";
+        cin >> Selected;
+    }
+  	for (Class &Class : Database)
+    {                                                           //change class Information related to student
+        if (Class.ClassName == Selected) {
+            Class.Data.push_back(S);
+            float Sum = (Class.Average * Class.Capacity);
+            Class.Capacity += 1;
+            Class.Average = (Sum + S.Grade) / (Class.Capacity);
+          	break;
+        }
+    }
+    cout<< "Your student have added successfully"<<endl;
+}
+void RemoveStudent(unsigned long long int ID1)                                          //This will remove a student
+{
+    for(Class &i : Database){                           //Search for student who will remove
+        for(int j = 0; j < i.Data.size(); j++) {
+            if(i.Data[j].ID == ID1)                     //Check for ID
+            {
+                float Sum = i.Average * i.Capacity;
+                Sum -= i.Data[j].Grade;
+                i.Data.erase(i.Data.begin() + j);
+                i.Capacity -= 1;
+                i.Average = Sum / i.Capacity;
+            }
+        }
+    }
+    cout << "Student with Id : "<<ID1<<" Removed successfully!"<<endl;
+}
