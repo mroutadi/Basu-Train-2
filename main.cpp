@@ -335,3 +335,96 @@ void RemoveStudent(unsigned long long int ID1)                                  
     }
     cout << "Student with Id : "<<ID1<<" Removed successfully!"<<endl;
 }
+
+void Search(unsigned long long int ID1)                                                 //This id for search by ID
+{
+  	for(Class &i : Database)
+    {
+        for(Student &j : i.Data)
+        {
+            if (j.ID == ID1)
+            {
+                cout << "Student with ID "<<ID1<<" is : "<<endl;
+                cout<< "Name and Family : "<<j.Firstname<<" "<<j.Lastname<<endl;
+                cout<< "Born : "<< j.Birthday.Year<<"/"<<j.Birthday.Month<<"/"<<
+                j.Birthday.Day<<"    and with Grade : "<<j.Grade;
+            }
+        }
+    }
+}
+void Search(string Name, string Last)                                                   //This id for search by Name and Family
+{
+  	for(Class &j : Database)
+    {
+        for(Student &i : j.Data)
+        {
+            //cout << Name <<"="<<i.Firstname<<"   "<<Last<< "="<<i.Lastname<<endl;
+            if (Name == i.Firstname && Last == i.Lastname)
+            {
+                cout<< "Student with Name and Family "<<i.Firstname<<" "<<i.Lastname;
+                cout << " is : \nID "<<i.ID;
+                cout<< "    Born : "<< i.Birthday.Year<<"/"<<i.Birthday.Month<<"/"<<
+                i.Birthday.Day<<"    with Grade : "<<i.Grade<<endl;
+                cout<<"Student is in class "<<j.ClassName<<endl;
+            }
+        }
+    }
+}
+void ShowClass(string Cls)                                                              //This will show selected or all class
+{
+    if ("" == Selected && "" == Cls)
+    {
+        int ClsCntr = 1;                            //Class counter for have a numbered list
+        int StdCntr = 1;                            //Student counter for have a numbered list
+        for(Class &i : Database)
+        {
+            StdCntr = 1;
+            cout <<ClsCntr<<") "<<i.ClassName<<" :\n"<<endl;
+            for(Student &j : i.Data)
+            {
+                if (StdCntr < 10) cout << " ";
+                cout <<StdCntr<<". "<<j.Firstname<<" " <<j.Lastname<< endl;
+                StdCntr ++ ;
+            }
+            ClsCntr ++ ;
+            cout<< endl <<string(30 , '-') << endl ;
+        }
+    }
+    else
+    {
+        for(Class &i:Database)
+        {
+            if(i.ClassName == Cls)
+            {
+                cout<< "The Selected Class is "<<i.ClassName<<" And have "<<
+                i.Capacity << " Student.\nClass average is : "<< i.Average<<endl;
+                cout<<"Do You Want See Class Students Name ?(Y/n)";                     //We want that your screen not be busy so ask about some prints(cout)
+                char Checker;                                                           //This character is your answer Var
+                cin>> Checker;
+                while(1)                                                                //Check for correct answer
+                {                                                                       /*Anyone who has never made a mistake, has never tried anything new  "Albert Enistein"*/
+                    if('Y'!=Checker && 'n'!=Checker)
+                    {
+                        cout<<"Please Enter Y or n(Be Careful about big or small letters)";
+                        continue;
+                    }
+                    if('Y'==Checker)
+                    {
+                        int counter = 1;
+                        for(Student &j : i.Data)
+                        {
+                            cout <<counter<<". " <<j.Firstname<< " "<<j.Lastname;
+                            if(counter%3==0) cout<<endl;
+                            else cout<<string(5 , ' ');
+                            counter ++;
+                        }
+                        cout << endl;
+                        break;
+                    }
+                    if('n'==Checker)
+                        return;
+                }
+            }
+        }
+    }
+}
