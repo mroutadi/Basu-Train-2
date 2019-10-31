@@ -428,3 +428,98 @@ void ShowClass(string Cls)                                                      
         }
     }
 }
+
+void SortByName()                                                                       //This will sort selected class by Family
+{
+  	for(Class &i : Database)
+    {
+      	if (i.ClassName == Selected)
+        {
+            for (int j = 0; j < i.Data.size() - 1; j++)
+            {
+                for (int k = 0; k < i.Data.size() - j - 1; k++)
+                {
+                    if(i.Data[k].Lastname > i.Data[k + 1].Lastname)
+                    {
+                        Student Temp;
+                        Temp = i.Data[k];
+                        i.Data[k] = i.Data[k+1];
+                        i.Data[k+1] = Temp;
+                    }
+                }
+            }
+            cout << "Class "<<Selected<<" after sort by LName :"<<endl;
+            int counter = 1;                                                //Again for a numbered list
+            for(Student &j : i.Data)
+            {
+
+                if (counter < 10) cout << " ";
+                cout<<counter<<". "<<j.Firstname<<" "<<j.Lastname<<string(5 , ' ')<<j.ID<<endl;
+                counter ++;
+            }
+        }
+    }
+
+
+}
+void SortById()                                                                         //This will sort selected class by Id
+{
+    for(Class &i : Database)
+    {
+      	if (i.ClassName == Selected)
+        {
+            for (int j = 0; j < i.Data.size() - 1; j++)
+            {
+                for (int k = 0; k < i.Data.size() - j - 1; k++)
+                {
+                    if(i.Data[k].ID > i.Data[k + 1].ID)
+                    {
+                        Student Temp;
+                        Temp = i.Data[k];
+                        i.Data[k] = i.Data[k+1];
+                        i.Data[k+1] = Temp;
+                    }
+                }
+            }
+            cout << "Class "<<Selected<<" after sort by ID :"<<endl;
+            int counter = 1;
+            for(Student &j : i.Data)
+            {
+                if (counter < 10) cout << " ";
+                cout<<counter<<". "<<j.Firstname<<" "<<j.Lastname<<string(5 , ' ')<<j.ID<<endl;
+                counter ++;
+            }
+        }
+    }
+}
+void Save()                                                                             //This will save DB in Files With Name Mphj<n>.basu
+{
+    int Counter = 1;
+    for (Class i : Database)
+    {
+        ofstream OutPut;
+        OutPut.open(string("ILMphj")+to_string(Counter)+".basu", ios::out | ios::trunc);
+        OutPut << i.ClassName << endl;
+        OutPut << i.Capacity << endl;
+        for (Student &j : i.Data)
+        {
+            OutPut <<j.Firstname<<" "<<j.Lastname<<" "
+            <<j.Birthday.Year<<"/"<<j.Birthday.Month<<"/"
+            <<j.Birthday.Day<<" "<<j.Grade<<" "<<j.ID<<endl;
+        }
+        OutPut.close();
+        Counter ++ ;
+    }
+}
+
+/*Info
+        I think every thing is clear and others were defined in comment
+        Everything i doesn't comment for example most of Funcs are clear
+
+        But every question just ask me
+
+        Email : Mohammad6Outadi@yahoo.com
+
+
+*/
+
